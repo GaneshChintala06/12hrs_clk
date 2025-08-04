@@ -52,6 +52,3 @@ pinout:
   uio[5]: "minutes[5]"
   uio[6]: ""
   uio[7]: ""
-
-# Do not change!
-yaml_version: 6
