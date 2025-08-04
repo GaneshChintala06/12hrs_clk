@@ -1,38 +1,88 @@
-`default_nettype none
 `timescale 1ns / 1ps
 
-/* This testbench just instantiates the module and makes some convenient wires
-   that can be driven / tested by the cocotb test.py.
-*/
-module tb ();
+module tb_clock_12h;
 
-  // Dump the signals to a VCD file. You can view it with gtkwave or surfer.
-  initial begin
-    $dumpfile("tb.vcd");
-    $dumpvars(0, tb);
-    #1;
-  end
-
-  // Wire up the inputs and outputs:
-  reg clk;
-  reg rst_n;
-  reg ena;
-  reg [7:0] ui_in;
-  reg [7:0] uio_in;
-  wire [7:0] uo_out;
-  wire [7:0] uio_out;
-  wire [7:0] uio_oe;
-
-  // Replace tt_um_example with your module name:
-  tt_um_example user_project (
-      .ui_in  (ui_in),    // Dedicated inputs
-      .uo_out (uo_out),   // Dedicated outputs
-      .uio_in (uio_in),   // IOs: Input path
-      .uio_out(uio_out),  // IOs: Output path
-      .uio_oe (uio_oe),   // IOs: Enable path (active high: 0=input, 1=output)
-      .ena    (ena),      // enable - goes high when design is selected
-      .clk    (clk),      // clock
-      .rst_n  (rst_n)     // not reset
-  );
-
+    // Inputs
+    reg clk;
+    reg rst;
+    
+    // Outputs
+    wire [3:0] hours;
+    wire [5:0] minutes;
+    wire [5:0] seconds;
+    wire am_pm;
+    
+    // Instantiate the Unit Under Test (UUT)
+    clock_12h uut (
+        .clk(clk), 
+        .rst(rst), 
+        .hours(hours), 
+        .minutes(minutes), 
+        .seconds(seconds), 
+        .am_pm(am_pm)
+    );
+    
+    // Clock generation
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk; // 100MHz clock for simulation
+    end
+    
+    // Test sequence
+    initial begin
+        // Initialize Inputs
+        rst = 1;
+        
+        // Wait for global reset
+        #100;
+        rst = 0;
+        
+        // Monitor for a few seconds
+        $monitor("Time: %0d:%02d:%02d %s", 
+                 hours, minutes, seconds, am_pm ? "PM" : "AM");
+        
+        // Test reset functionality
+        #1000;
+        $display("\n--- Testing Reset ---");
+        rst = 1;
+        #20;
+        rst = 0;
+        
+        // Fast simulation - advance time quickly
+        repeat(100) begin
+            #10;
+        end
+        
+        // Test hour rollover
+        $display("\n--- Testing Hour Rollover ---");
+        force uut.hours = 4'd11;
+        force uut.minutes = 6'd59;
+        force uut.seconds = 6'd58;
+        #20;
+        release uut.hours;
+        release uut.minutes;
+        release uut.seconds;
+        
+        repeat(5) #10;
+        
+        $display("\n--- Testing 12 to 1 Rollover ---");
+        force uut.hours = 4'd12;
+        force uut.minutes = 6'd59;
+        force uut.seconds = 6'd58;
+        #20;
+        release uut.hours;
+        release uut.minutes;
+        release uut.seconds;
+        
+        repeat(5) #10;
+        
+        $finish;
+    end
+    
+    // VCD dump for waveform viewing
+    initial begin
+        $dumpfile("clock_12h.vcd");
+        $dumpvars(0, tb_clock_12h);
+    end
+      
 endmodule
