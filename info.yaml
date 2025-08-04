@@ -1,7 +1,3 @@
-# TinyTapeout project information
-# Learn more at https://tinytapeout.com/
-
-# The schema version must be specified for parsing
 yaml_version: 6
 
 project:
@@ -9,21 +5,12 @@ project:
   author: "Your Name"
   description: "A Verilog implementation of a 12-hour digital clock with AM/PM indication"
 
-# Source files for the project  
 source_files:
   - project.v
 
-# The top level macro/module
 top_module: "tt_um_clock_12h"
 
-# List of documents to auto-generate
-auto_generated:
-  - datasheet:
-      - RTL
-
-# Pins - you can type one pin per line, or one functionality per line
 pinout:
-  # Inputs
   ui[0]: ""
   ui[1]: ""
   ui[2]: ""
@@ -32,18 +19,14 @@ pinout:
   ui[5]: ""
   ui[6]: ""
   ui[7]: ""
-
-  # Outputs  
   uo[0]: "hours[0]"
-  uo[1]: "hours[1]"
+  uo[1]: "hours[1]"  
   uo[2]: "hours[2]"
   uo[3]: "hours[3]"
   uo[4]: "seconds[4]"
   uo[5]: "seconds[5]"
   uo[6]: ""
   uo[7]: "am_pm"
-
-  # Bidirectional pins
   uio[0]: "minutes[0]"
   uio[1]: "minutes[1]"
   uio[2]: "minutes[2]"
