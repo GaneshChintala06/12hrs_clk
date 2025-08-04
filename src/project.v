@@ -7,8 +7,8 @@ module clock_12h (
     output reg        am_pm
 );
 
-    // Clock counter logic
-    always_ff @(posedge clk or posedge rst) begin
+    // Clock counter logic - Pure Verilog for synthesis
+    always @(posedge clk or posedge rst) begin
         if (rst) begin
             hours   <= 4'd12;
             minutes <= 6'd0;
@@ -40,10 +40,5 @@ module clock_12h (
             end
         end
     end
-
-    // Synthesis pragma to help with optimization
-    /* verilator lint_off UNUSED */
-    wire _unused = &{1'b0};
-    /* verilator lint_on UNUSED */
 
 endmodule
