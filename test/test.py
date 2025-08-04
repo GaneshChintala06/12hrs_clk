@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for 12-hour clock Verilog module
+Test script for TinyTapeout 12-hour clock Verilog module
 Runs simulation and validates clock behavior
 """
 
@@ -29,7 +29,7 @@ def run_command(cmd, description):
 def main():
     """Main test function"""
     print("=" * 50)
-    print("12-Hour Clock Verilog Test Suite")
+    print("TinyTapeout 12-Hour Clock Verilog Test Suite")
     print("=" * 50)
     
     # Check if required files exist
@@ -40,8 +40,8 @@ def main():
             sys.exit(1)
     
     # Compile and run simulation with Icarus Verilog
-    if run_command("iverilog -o clock_sim project.v tb.v", "Compilation"):
-        if run_command("./clock_sim", "Simulation"):
+    if run_command("iverilog -o tt_clock_sim project.v tb.v", "Compilation"):
+        if run_command("./tt_clock_sim", "Simulation"):
             print("\n" + "=" * 50)
             print("All tests passed successfully!")
             print("Check 12hrs_clk.vcd for waveform analysis")

@@ -1,11 +1,11 @@
-# Makefile for 12-hour clock Verilog project
+# Makefile for TinyTapeout 12-hour clock Verilog project
 
 # Default simulator
 SIM ?= iverilog
-TOP_MODULE = clock_12h
-TESTBENCH = tb_clock_12h
+TOP_MODULE = tt_um_clock_12h
+TESTBENCH = tb_tt_um_clock_12h
 SOURCES = project.v tb.v
-OUTPUT = clock_sim
+OUTPUT = tt_clock_sim
 VCD_FILE = 12hrs_clk.vcd
 
 # Default target
